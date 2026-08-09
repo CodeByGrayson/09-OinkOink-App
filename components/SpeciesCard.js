@@ -1,19 +1,24 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors, radius, shadow, spacing } from '../theme';
 
-export default function ArtworkCard({ artwork, onPress }) {
+export default function SpeciesCard({ species, onPress }) {
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => onPress?.(artwork)}
+      onPress={() => onPress?.(species)}
       activeOpacity={0.85}
     >
       <View style={styles.imageWrapper}>
-        <Image source={artwork.image} style={styles.image} />
+        <Image source={species.thumbnail} style={styles.image} />
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>
+            {species.count} {species.count === 1 ? 'card' : 'cards'}
+          </Text>
+        </View>
       </View>
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={2}>
-          {artwork.pokemon}
+          {species.pokemon}
         </Text>
       </View>
     </TouchableOpacity>
@@ -35,6 +40,20 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  badge: {
+    position: 'absolute',
+    right: spacing.xs,
+    bottom: spacing.xs,
+    backgroundColor: colors.shadow,
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+  },
+  badgeText: {
+    color: colors.surface,
+    fontSize: 11,
+    fontWeight: '600',
   },
   info: {
     padding: spacing.sm,

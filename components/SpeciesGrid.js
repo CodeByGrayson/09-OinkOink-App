@@ -1,26 +1,19 @@
 import { FlatList, StyleSheet } from 'react-native';
 import { spacing } from '../theme';
-import ArtworkCard from './ArtworkCard';
 import EmptyState from './EmptyState';
+import SpeciesCard from './SpeciesCard';
 
-export default function ArtworkGrid({
-  artworks,
-  onArtworkPress,
-  onEndReached,
-  ListHeaderComponent,
-}) {
+export default function SpeciesGrid({ species, onSpeciesPress, ListHeaderComponent }) {
   return (
     <FlatList
-      data={artworks}
-      keyExtractor={(item) => String(item.id)}
+      data={species}
+      keyExtractor={(item) => item.pokemon}
       numColumns={2}
-      renderItem={({ item }) => <ArtworkCard artwork={item} onPress={onArtworkPress} />}
+      renderItem={({ item }) => <SpeciesCard species={item} onPress={onSpeciesPress} />}
       columnWrapperStyle={styles.row}
       contentContainerStyle={styles.content}
       ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={EmptyState}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
     />
   );
