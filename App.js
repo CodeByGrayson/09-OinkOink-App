@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { useMemo, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import ArtworkDetailScreen from './components/ArtworkDetailScreen';
+import ArtworkGrid from './components/ArtworkGrid';
 import BottomNavigation from './components/BottomNavigation';
-import ProductGrid from './components/ProductGrid';
 import SearchBar from './components/SearchBar';
-import { mockProducts } from './data/mockProducts';
+import ArtworkService from './services/ArtworkService';
 import { colors, spacing } from './theme';
 
 function ComingSoonScreen() {
@@ -16,15 +17,70 @@ function ComingSoonScreen() {
   );
 }
 
+function DiscoverScreen() {
+  const [artworks, setArtworks] = useState([]);
+  const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'error'
+  const [query, setQuery] = useState('');
+  const [selectedArtwork, setSelectedArtwork] = useState(null);
+
+  const load = useCallback(async () => {
+    setStatus('loading');
+    try {
+      const active = await ArtworkService.getActive();
+      setArtworks(active);
+      setStatus('ready');
+    } catch (error) {
+      setStatus('error');
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const filteredArtworks = useMemo(() => {
+    if (!query.trim()) return artworks;
+    const lower = query.trim().toLowerCase();
+    return artworks.filter((artwork) => artwork.pokemon.toLowerCase().includes(lower));
+  }, [artworks, query]);
+
+  if (selectedArtwork) {
+    return (
+      <ArtworkDetailScreen artwork={selectedArtwork} onBack={() => setSelectedArtwork(null)} />
+    );
+  }
+
+  if (status === 'loading') {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  if (status === 'error') {
+    return (
+      <View style={styles.centered}>
+        <Text style={styles.errorText}>Couldn't load artwork. Check your connection.</Text>
+        <TouchableOpacity style={styles.retryButton} onPress={load}>
+          <Text style={styles.retryButtonText}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.content}>
+      <View style={styles.searchBarWrapper}>
+        <SearchBar value={query} onChangeText={setQuery} placeholder="Search Pokemon..." />
+      </View>
+      <ArtworkGrid artworks={filteredArtworks} onArtworkPress={setSelectedArtwork} />
+    </View>
+  );
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('search');
-  const [query, setQuery] = useState('');
-
-  const filteredProducts = useMemo(() => {
-    if (!query.trim()) return mockProducts;
-    const lower = query.trim().toLowerCase();
-    return mockProducts.filter((product) => product.name.toLowerCase().includes(lower));
-  }, [query]);
 
   return (
     <SafeAreaProvider>
@@ -34,16 +90,7 @@ export default function App() {
           <Text style={styles.headerTitle}>Discover</Text>
         </View>
 
-        {activeTab === 'search' ? (
-          <View style={styles.content}>
-            <View style={styles.searchBarWrapper}>
-              <SearchBar value={query} onChangeText={setQuery} />
-            </View>
-            <ProductGrid products={filteredProducts} />
-          </View>
-        ) : (
-          <ComingSoonScreen />
-        )}
+        {activeTab === 'search' ? <DiscoverScreen /> : <ComingSoonScreen />}
 
         <BottomNavigation activeTab={activeTab} onChangeTab={setActiveTab} />
       </SafeAreaView>
@@ -81,5 +128,27 @@ const styles = StyleSheet.create({
   comingSoonText: {
     fontSize: 16,
     color: colors.textMuted,
+  },
+  centered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.lg,
+  },
+  errorText: {
+    fontSize: 14,
+    color: colors.textMuted,
+    textAlign: 'center',
+  },
+  retryButton: {
+    marginTop: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    backgroundColor: colors.primary,
+    borderRadius: 999,
+  },
+  retryButtonText: {
+    color: colors.surface,
+    fontWeight: '600',
   },
 });

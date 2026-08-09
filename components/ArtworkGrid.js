@@ -1,20 +1,20 @@
 import { FlatList, StyleSheet } from 'react-native';
 import { spacing } from '../theme';
+import ArtworkCard from './ArtworkCard';
 import EmptyState from './EmptyState';
-import ProductCard from './ProductCard';
 
-export default function ProductGrid({
-  products,
-  onProductPress,
+export default function ArtworkGrid({
+  artworks,
+  onArtworkPress,
   onEndReached,
   ListHeaderComponent,
 }) {
   return (
     <FlatList
-      data={products}
-      keyExtractor={(item) => item.id}
+      data={artworks}
+      keyExtractor={(item) => String(item.id)}
       numColumns={2}
-      renderItem={({ item }) => <ProductCard product={item} onPress={onProductPress} />}
+      renderItem={({ item }) => <ArtworkCard artwork={item} onPress={onArtworkPress} />}
       columnWrapperStyle={styles.row}
       contentContainerStyle={styles.content}
       ListHeaderComponent={ListHeaderComponent}

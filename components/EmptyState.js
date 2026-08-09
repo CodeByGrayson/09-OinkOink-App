@@ -8,7 +8,7 @@ export default function EmptyState() {
       <View style={styles.iconCircle}>
         <Ionicons name="search-outline" size={40} color={colors.textMuted} />
       </View>
-      <Text style={styles.title}>No products found.</Text>
+      <Text style={styles.title}>No artwork found.</Text>
       <Text style={styles.subtitle}>Try a different search term.</Text>
     </View>
   );

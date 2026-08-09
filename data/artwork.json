@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "pokemon": "Umbreon",
+    "description": "Umbreon VMAX HR: SA #095",
+    "active": true,
+    "imageFile": "Screenshot_20260803_070207_Gallery.jpg",
+    "lastUpdated": "2026-08-09"
+  },
+  {
+    "id": 2,
+    "pokemon": "Umbreon",
+    "description": "Umbreon : PROMO 25th Anniversary Ed #012",
+    "active": true,
+    "imageFile": "Screenshot_20260609_085502_Drive.jpg",
+    "lastUpdated": "2026-08-09"
+  },
+  {
+    "id": 3,
+    "pokemon": "Gengar",
+    "description": "Gengar VMAX: SA #020",
+    "active": true,
+    "imageFile": "Screenshot_20260609_101541_Drive.jpg",
+    "lastUpdated": "2026-08-09"
+  },
+  {
+    "id": 4,
+    "pokemon": "Giratina",
+    "description": "Giratina V SR: SA #111",
+    "active": true,
+    "imageFile": "Screenshot_20260609_101630_Drive.jpg",
+    "lastUpdated": "2026-08-09"
+  },
+  {
+    "id": 5,
+    "pokemon": "Charizard",
+    "description": "Charizard ex SAR #201",
+    "active": true,
+    "imageFile": "Screenshot_20260809_145509_Drive.jpg",
+    "lastUpdated": "2026-08-09"
+  },
+  {
+    "id": 6,
+    "pokemon": "Mex",
+    "description": "Bubble Mew (Blue)",
+    "active": true,
+    "imageFile": "Screenshot_20260609_101712_Drive.jpg",
+    "lastUpdated": "2026-08-09"
+  }
+]
