@@ -9,7 +9,7 @@ export default function SpeciesCard({ species, onPress }) {
       activeOpacity={0.85}
     >
       <View style={styles.imageWrapper}>
-        <Image source={species.thumbnail} style={styles.image} />
+        <Image source={species.thumbnail} style={styles.image} resizeMode="cover" />
         <View style={styles.badge}>
           <Text style={styles.badgeText}>
             {species.count} {species.count === 1 ? 'card' : 'cards'}
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     ...shadow,
   },
   imageWrapper: {
-    aspectRatio: 1,
+    aspectRatio: 600 / 835,
     backgroundColor: colors.border,
   },
   image: {

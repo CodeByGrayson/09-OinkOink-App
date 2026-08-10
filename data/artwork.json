@@ -20,8 +20,8 @@
     "pokemon": "Gengar",
     "description": "Gengar VMAX: SA #020",
     "active": true,
-    "imageFile": "Screenshot_20260609_101541_Drive.jpg",
-    "lastUpdated": "2026-08-09"
+    "imageFile": "Mega_Gengar_ex_284_textless.png",
+    "lastUpdated": "2026-08-10"
   },
   {
     "id": 4,
@@ -36,8 +36,8 @@
     "pokemon": "Charizard",
     "description": "Charizard ex SAR #201",
     "active": true,
-    "imageFile": "Screenshot_20260809_145509_Drive.jpg",
-    "lastUpdated": "2026-08-09"
+    "imageFile": "Mega_Charizard_X_ex_125_textless.png",
+    "lastUpdated": "2026-08-10"
   },
   {
     "id": 6,

@@ -17,7 +17,7 @@ export default function SpeciesDetailScreen({ species, onBack }) {
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
           <View style={styles.cardRow}>
-            <Image source={item.image} style={styles.cardImage} />
+            <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
             <Text style={styles.cardDescription}>{item.description}</Text>
           </View>
         )}
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     width: '100%',
-    aspectRatio: 1,
+    aspectRatio: 600 / 835,
     backgroundColor: colors.border,
   },
   cardDescription: {
