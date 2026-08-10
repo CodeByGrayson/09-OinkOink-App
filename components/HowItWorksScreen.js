@@ -1,7 +1,13 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors, radius, shadow, spacing } from '../theme';
 
 const EXPLODED_VIEW_IMAGE = require('../artwork/zz_HowItWorks_011.png');
+// Reads the same build-time asset metadata Metro embeds for the local PNG —
+// no network round trip needed (unlike Image.getSize, which is for remote URIs).
+const EXPLODED_VIEW_SOURCE = Image.resolveAssetSource(EXPLODED_VIEW_IMAGE);
+const EXPLODED_VIEW_RATIO = EXPLODED_VIEW_SOURCE.width / EXPLODED_VIEW_SOURCE.height;
+const ESTIMATED_CONTENT_WIDTH = Dimensions.get('window').width - spacing.md * 2;
 
 function Section({ title, children }) {
   return (
@@ -22,6 +28,12 @@ function ImagePlaceholder({ label }) {
 }
 
 export default function HowItWorksScreen() {
+  const [explodedImageWidth, setExplodedImageWidth] = useState(ESTIMATED_CONTENT_WIDTH);
+
+  const onExplodedImageWrapperLayout = useCallback((event) => {
+    setExplodedImageWidth(event.nativeEvent.layout.width);
+  }, []);
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
       <Section title="What You Get">
@@ -37,7 +49,13 @@ export default function HowItWorksScreen() {
         </Text>
       </Section>
 
-      <Image source={EXPLODED_VIEW_IMAGE} style={styles.explodedImage} resizeMode="contain" />
+      <View style={styles.explodedImageWrapper} onLayout={onExplodedImageWrapperLayout}>
+        <Image
+          source={EXPLODED_VIEW_IMAGE}
+          style={[styles.explodedImage, { height: explodedImageWidth / EXPLODED_VIEW_RATIO }]}
+          resizeMode="contain"
+        />
+      </View>
 
       <Section title="What Is Extended Art?">
         <Text style={styles.paragraph}>
@@ -113,14 +131,18 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: 4,
   },
-  explodedImage: {
+  explodedImageWrapper: {
     width: '100%',
-    aspectRatio: 1080 / 802,
     borderRadius: radius.md,
     backgroundColor: colors.surface,
     marginBottom: spacing.lg,
+    overflow: 'hidden',
+  },
+  explodedImage: {
+    width: '100%',
   },
   imagePlaceholder: {
+    width: '100%',
     height: 160,
     borderRadius: radius.md,
     borderWidth: 1,
@@ -130,6 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.lg,
+    overflow: 'hidden',
   },
   imagePlaceholderText: {
     fontSize: 13,
