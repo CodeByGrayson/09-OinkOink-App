@@ -1,5 +1,7 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors, radius, shadow, spacing } from '../theme';
+
+const EXPLODED_VIEW_IMAGE = require('../artwork/zz_HowItWorks_011.png');
 
 function Section({ title, children }) {
   return (
@@ -35,8 +37,7 @@ export default function HowItWorksScreen() {
         </Text>
       </Section>
 
-      {/* Illustrative image placeholder: exploded-view diagram of the case layers */}
-      <ImagePlaceholder label="Image: exploded view of case layers (coming soon)" />
+      <Image source={EXPLODED_VIEW_IMAGE} style={styles.explodedImage} resizeMode="contain" />
 
       <Section title="What Is Extended Art?">
         <Text style={styles.paragraph}>
@@ -111,6 +112,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.text,
     marginBottom: 4,
+  },
+  explodedImage: {
+    width: '100%',
+    aspectRatio: 1080 / 802,
+    borderRadius: radius.md,
+    backgroundColor: colors.surface,
+    marginBottom: spacing.lg,
   },
   imagePlaceholder: {
     height: 160,
