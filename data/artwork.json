@@ -4,16 +4,16 @@
     "pokemon": "Umbreon",
     "description": "Umbreon VMAX HR: SA #095",
     "active": true,
-    "imageFile": "Screenshot_20260803_070207_Gallery.jpg",
-    "lastUpdated": "2026-08-09"
+    "imageFile": "Umbreon_VMAX_215_textless.png",
+    "lastUpdated": "2026-08-10"
   },
   {
     "id": 2,
     "pokemon": "Umbreon",
-    "description": "Umbreon : PROMO 25th Anniversary Ed #012",
+    "description": "Umbreon Prismatic Evolutions",
     "active": true,
-    "imageFile": "Screenshot_20260609_085502_Drive.jpg",
-    "lastUpdated": "2026-08-09"
+    "imageFile": "Umbreon_ex_161_textless.png",
+    "lastUpdated": "2026-08-10"
   },
   {
     "id": 3,
@@ -26,10 +26,10 @@
   {
     "id": 4,
     "pokemon": "Giratina",
-    "description": "Giratina V SR: SA #111",
+    "description": "Giratina V SR: SA #111 Lost Origin",
     "active": true,
-    "imageFile": "Screenshot_20260609_101630_Drive.jpg",
-    "lastUpdated": "2026-08-09"
+    "imageFile": "Giratina_V_186_textless.png",
+    "lastUpdated": "2026-08-10"
   },
   {
     "id": 5,
@@ -42,25 +42,25 @@
   {
     "id": 6,
     "pokemon": "Mew",
-    "description": "Bubble Mew (Blue)",
+    "description": "Bubble Mew Paldean Fates",
     "active": true,
-    "imageFile": "Screenshot_20260609_101712_Drive.jpg",
-    "lastUpdated": "2026-08-09"
+    "imageFile": "Mew_ex_232_textless.png",
+    "lastUpdated": "2026-08-10"
   },
   {
     "id": 7,
     "pokemon": "Dragonite",
-    "description": "Dragonite (Both Side)",
+    "description": "Dragonite Ascended Heroes",
     "active": true,
-    "imageFile": "Screenshot_20260809_145627_Drive.jpg",
-    "lastUpdated": "2026-08-09"
+    "imageFile": "Mega_Dragonite_ex_290_textless.png",
+    "lastUpdated": "2026-08-10"
   },
   {
     "id": 8,
     "pokemon": "Mew",
-    "description": "Bubble Mew (9 Pieces)",
+    "description": "Mew Pokémon ex rule",
     "active": true,
-    "imageFile": "screenwriter_temp_1786272303953.jpg",
-    "lastUpdated": "2026-08-09"
+    "imageFile": "Mew_EX_053_textless.png",
+    "lastUpdated": "2026-08-10"
   }
 ]
