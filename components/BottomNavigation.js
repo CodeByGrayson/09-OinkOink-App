@@ -5,7 +5,7 @@ import { colors, spacing } from '../theme';
 
 const TABS = [
   { id: 'search', label: 'Search', icon: 'search', activeIcon: 'search' },
-  { id: 'tab2', label: 'Coming Soon', icon: 'grid-outline', activeIcon: 'grid' },
+  { id: 'tab2', label: 'How It Works', icon: 'grid-outline', activeIcon: 'grid' },
   { id: 'tab3', label: 'Coming Soon', icon: 'heart-outline', activeIcon: 'heart' },
   { id: 'tab4', label: 'Coming Soon', icon: 'person-outline', activeIcon: 'person' },
 ];
