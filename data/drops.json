@@ -15,8 +15,16 @@
     "id": 2,
     "type": "new_design",
     "pokemon": "Pikachu ex",
-    "description": "New extended art design just dropped",
-    "imageFile": "Pikachu_ex_277_textless.png",
+    "description": "Topaz Bolt crystal-themed extended art",
+    "imageFile": "New_Design_01_Telegram 1.png",
+    "active": true
+  },
+  {
+    "id": 3,
+    "type": "new_design",
+    "pokemon": "New Design",
+    "description": "New extended art design",
+    "imageFile": "New_Design_02_Telegram.png",
     "active": true
   }
 ]

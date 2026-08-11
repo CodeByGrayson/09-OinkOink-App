@@ -12,7 +12,9 @@ class DropsService {
     const records = await response.json();
     return records.map((record) => ({
       ...record,
-      image: { uri: `${RAW_BASE_URL}/artwork/${record.imageFile}` },
+      // Some drop image filenames contain spaces (e.g. "New_Design_01_Telegram 1.png");
+      // encode the filename segment so the raw GitHub URL stays valid (space -> %20).
+      image: { uri: `${RAW_BASE_URL}/artwork/${encodeURIComponent(record.imageFile)}` },
     }));
   }
 

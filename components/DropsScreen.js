@@ -62,8 +62,11 @@ function PromotionBanner({ item }) {
   );
 }
 
-// Reuses SpeciesCard's 600x835 card frame (radius, shadow, aspect ratio) for
-// visual consistency with the Search tab, rather than a new frame style.
+// Reuses SpeciesCard's white/rounded/shadow card treatment for visual
+// consistency with the Search tab, but with its own 600x1000 image frame:
+// new_design renders are full extended-art concepts (card art plus the
+// surrounding printed frame), a different shape than SpeciesCard's 600x835
+// card-only photos, so they need a dedicated aspect ratio, not a shared one.
 function NewDesignCard({ item }) {
   return (
     <View style={styles.designCard}>
@@ -225,7 +228,7 @@ const styles = StyleSheet.create({
     ...shadow,
   },
   designImageWrapper: {
-    aspectRatio: 600 / 835,
+    aspectRatio: 600 / 1000,
     backgroundColor: colors.border,
   },
   designImage: {
