@@ -3,13 +3,11 @@ import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-nat
 import { colors, radius, shadow, spacing } from '../theme';
 
 const EXPLODED_VIEW_IMAGE = require('../artwork/zz_HowItWorks_011.png');
-// Reads the same build-time asset metadata Metro embeds for the local PNG —
-// no network round trip needed (unlike Image.getSize, which is for remote URIs).
-const EXPLODED_VIEW_SOURCE = Image.resolveAssetSource(EXPLODED_VIEW_IMAGE);
-const EXPLODED_VIEW_RATIO = EXPLODED_VIEW_SOURCE.width / EXPLODED_VIEW_SOURCE.height;
+// Image.resolveAssetSource() is native-only and throws on react-native-web,
+// so the known pixel dimensions of these fixed local assets are hardcoded here.
+const EXPLODED_VIEW_RATIO = 518 / 385;
 const HOLOFOIL_SWATCH_IMAGE = require('../artwork/zz_HowItWorks_012.png');
-const HOLOFOIL_SWATCH_SOURCE = Image.resolveAssetSource(HOLOFOIL_SWATCH_IMAGE);
-const HOLOFOIL_SWATCH_RATIO = HOLOFOIL_SWATCH_SOURCE.width / HOLOFOIL_SWATCH_SOURCE.height;
+const HOLOFOIL_SWATCH_RATIO = 518 / 207;
 const ESTIMATED_CONTENT_WIDTH = Dimensions.get('window').width - spacing.md * 2;
 
 function Section({ title, children }) {
