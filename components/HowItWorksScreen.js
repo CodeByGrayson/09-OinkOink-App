@@ -7,6 +7,9 @@ const EXPLODED_VIEW_IMAGE = require('../artwork/zz_HowItWorks_011.png');
 // no network round trip needed (unlike Image.getSize, which is for remote URIs).
 const EXPLODED_VIEW_SOURCE = Image.resolveAssetSource(EXPLODED_VIEW_IMAGE);
 const EXPLODED_VIEW_RATIO = EXPLODED_VIEW_SOURCE.width / EXPLODED_VIEW_SOURCE.height;
+const HOLOFOIL_SWATCH_IMAGE = require('../artwork/zz_HowItWorks_012.png');
+const HOLOFOIL_SWATCH_SOURCE = Image.resolveAssetSource(HOLOFOIL_SWATCH_IMAGE);
+const HOLOFOIL_SWATCH_RATIO = HOLOFOIL_SWATCH_SOURCE.width / HOLOFOIL_SWATCH_SOURCE.height;
 const ESTIMATED_CONTENT_WIDTH = Dimensions.get('window').width - spacing.md * 2;
 
 function Section({ title, children }) {
@@ -18,20 +21,16 @@ function Section({ title, children }) {
   );
 }
 
-function ImagePlaceholder({ label }) {
-  // TODO: replace with an actual illustrative image (e.g. exploded-view diagram)
-  return (
-    <View style={styles.imagePlaceholder}>
-      <Text style={styles.imagePlaceholderText}>{label}</Text>
-    </View>
-  );
-}
-
 export default function HowItWorksScreen() {
   const [explodedImageWidth, setExplodedImageWidth] = useState(ESTIMATED_CONTENT_WIDTH);
+  const [holofoilImageWidth, setHolofoilImageWidth] = useState(ESTIMATED_CONTENT_WIDTH);
 
   const onExplodedImageWrapperLayout = useCallback((event) => {
     setExplodedImageWidth(event.nativeEvent.layout.width);
+  }, []);
+
+  const onHolofoilImageWrapperLayout = useCallback((event) => {
+    setHolofoilImageWidth(event.nativeEvent.layout.width);
   }, []);
 
   return (
@@ -80,8 +79,14 @@ export default function HowItWorksScreen() {
         </View>
       </Section>
 
-      {/* Illustrative image placeholder: acrylic vs. foil insert comparison */}
-      <ImagePlaceholder label="Image: acrylic vs. foil comparison (coming soon)" />
+      <View style={styles.holofoilImageWrapper} onLayout={onHolofoilImageWrapperLayout}>
+        <Image
+          source={HOLOFOIL_SWATCH_IMAGE}
+          style={[styles.holofoilImage, { height: holofoilImageWidth / HOLOFOIL_SWATCH_RATIO }]}
+          resizeMode="contain"
+        />
+      </View>
+      <Text style={styles.imageCaption}>Available holofoil patterns</Text>
 
       <Section title="UV Protection">
         <Text style={styles.paragraph}>
@@ -141,23 +146,20 @@ const styles = StyleSheet.create({
   explodedImage: {
     width: '100%',
   },
-  imagePlaceholder: {
+  holofoilImageWrapper: {
     width: '100%',
-    height: 160,
     borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderStyle: 'dashed',
     backgroundColor: colors.surface,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.lg,
     overflow: 'hidden',
   },
-  imagePlaceholderText: {
+  holofoilImage: {
+    width: '100%',
+  },
+  imageCaption: {
     fontSize: 13,
     color: colors.textMuted,
     textAlign: 'center',
-    paddingHorizontal: spacing.md,
+    marginTop: spacing.sm,
+    marginBottom: spacing.lg,
   },
 });
