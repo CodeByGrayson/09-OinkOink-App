@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavigation from './components/BottomNavigation';
+import DropsScreen from './components/DropsScreen';
 import HowItWorksScreen from './components/HowItWorksScreen';
 import SpeciesGridScreen from './components/SpeciesGridScreen';
 import { colors, spacing } from './theme';
@@ -18,6 +19,7 @@ function ComingSoonScreen() {
 const HEADER_TITLES = {
   search: 'Search',
   tab2: 'How It Works',
+  tab3: 'Drops',
 };
 
 export default function App() {
@@ -35,6 +37,8 @@ export default function App() {
           <SpeciesGridScreen />
         ) : activeTab === 'tab2' ? (
           <HowItWorksScreen />
+        ) : activeTab === 'tab3' ? (
+          <DropsScreen />
         ) : (
           <ComingSoonScreen />
         )}

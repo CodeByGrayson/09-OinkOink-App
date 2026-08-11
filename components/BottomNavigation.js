@@ -6,12 +6,30 @@ import { colors, spacing } from '../theme';
 const TABS = [
   { id: 'search', label: 'Search', icon: 'search', activeIcon: 'search' },
   { id: 'tab2', label: 'How It Works', icon: 'grid-outline', activeIcon: 'grid' },
-  { id: 'tab3', label: 'Coming Soon', icon: 'heart-outline', activeIcon: 'heart' },
+  { id: 'tab3', label: 'Drops', icon: 'pokeball' },
   { id: 'tab4', label: 'Coming Soon', icon: 'person-outline', activeIcon: 'person' },
 ];
 
+// Plain-geometry stylized ball (circle + band + center dot) in the app's own
+// palette — deliberately not a reproduction of the trademarked Poké Ball design.
+function PokeballIcon({ size = 22, color }) {
+  const centerSize = Math.round(size * 0.36);
+  return (
+    <View style={[styles.pokeball, { width: size, height: size, borderRadius: size / 2, borderColor: color }]}>
+      <View style={[styles.pokeballBand, { backgroundColor: color }]} />
+      <View
+        style={[
+          styles.pokeballCenter,
+          { width: centerSize, height: centerSize, borderRadius: centerSize / 2, borderColor: color },
+        ]}
+      />
+    </View>
+  );
+}
+
 function NavItem({ tab, isActive, onPress }) {
   const scale = useRef(new Animated.Value(1)).current;
+  const color = isActive ? colors.primary : colors.textMuted;
 
   const handlePress = () => {
     Animated.sequence([
@@ -24,11 +42,11 @@ function NavItem({ tab, isActive, onPress }) {
   return (
     <Pressable style={styles.item} onPress={handlePress} hitSlop={8}>
       <Animated.View style={{ transform: [{ scale }] }}>
-        <Ionicons
-          name={isActive ? tab.activeIcon : tab.icon}
-          size={22}
-          color={isActive ? colors.primary : colors.textMuted}
-        />
+        {tab.icon === 'pokeball' ? (
+          <PokeballIcon color={color} />
+        ) : (
+          <Ionicons name={isActive ? tab.activeIcon : tab.icon} size={22} color={color} />
+        )}
       </Animated.View>
       <Text style={[styles.label, isActive && styles.labelActive]}>{tab.label}</Text>
     </Pressable>
@@ -72,5 +90,23 @@ const styles = StyleSheet.create({
   labelActive: {
     color: colors.primary,
     fontWeight: '600',
+  },
+  pokeball: {
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  pokeballBand: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: '50%',
+    height: 1.5,
+    marginTop: -0.75,
+  },
+  pokeballCenter: {
+    borderWidth: 1.5,
+    backgroundColor: colors.surface,
   },
 });

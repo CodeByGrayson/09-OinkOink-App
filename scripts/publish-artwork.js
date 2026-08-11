@@ -18,7 +18,7 @@ function hasStagedChanges() {
 
 const branch = execSync('git rev-parse --abbrev-ref HEAD', { cwd: repoRoot }).toString().trim();
 
-run('git add data/artwork.json artwork/');
+run('git add data/artwork.json data/drops.json artwork/');
 
 if (hasStagedChanges()) {
   run(`git commit -m "${commitMessage.replace(/"/g, '\\"')}"`);

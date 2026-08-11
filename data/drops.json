@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "type": "promotion",
+    "title": "National Day Promotion",
+    "description": "5 sets of PSA extended artwork for $61 only!",
+    "imageFile": "Promotions_Banner_Telegram.png",
+    "imageWidth": 518,
+    "imageHeight": 868,
+    "validFrom": "2026-08-08",
+    "validTo": "2026-08-10",
+    "active": true
+  },
+  {
+    "id": 2,
+    "type": "new_design",
+    "pokemon": "Pikachu ex",
+    "description": "New extended art design just dropped",
+    "imageFile": "Pikachu_ex_277_textless.png",
+    "active": true
+  }
+]
