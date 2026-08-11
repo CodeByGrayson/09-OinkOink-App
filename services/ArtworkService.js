@@ -1,7 +1,4 @@
-const GITHUB_USER = 'CodeByGrayson';
-const GITHUB_REPO = '09-OinkOink-App';
-const GITHUB_BRANCH = 'main';
-const RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}`;
+import { RAW_BASE_URL } from './githubRepo';
 
 // All artwork access goes through this service. It fetches artwork.json from
 // the GitHub repo at runtime and points each record's image at its raw
