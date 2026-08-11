@@ -2,12 +2,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ArtworkService from '../services/ArtworkService';
 import { groupBySpecies } from '../services/speciesGrouping';
-import { colors, spacing } from '../theme';
+import { useTheme } from '../ThemeContext';
 import SearchBar from './SearchBar';
 import SpeciesDetailScreen from './SpeciesDetailScreen';
 import SpeciesGrid from './SpeciesGrid';
 
 export default function SpeciesGridScreen() {
+  const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const [artworks, setArtworks] = useState([]);
   const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'error'
   const [query, setQuery] = useState('');
@@ -46,7 +48,7 @@ export default function SpeciesGridScreen() {
   if (status === 'loading') {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={colors.primary} />
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     );
   }
@@ -72,34 +74,37 @@ export default function SpeciesGridScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-  },
-  searchBarWrapper: {
-    paddingHorizontal: spacing.md,
-    paddingBottom: spacing.md,
-  },
-  centered: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
-  },
-  errorText: {
-    fontSize: 14,
-    color: colors.textMuted,
-    textAlign: 'center',
-  },
-  retryButton: {
-    marginTop: spacing.md,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.primary,
-    borderRadius: 999,
-  },
-  retryButtonText: {
-    color: colors.surface,
-    fontWeight: '600',
-  },
-});
+function createStyles(theme) {
+  const { colors, radius, spacing } = theme;
+  return StyleSheet.create({
+    content: {
+      flex: 1,
+    },
+    searchBarWrapper: {
+      paddingHorizontal: spacing.md,
+      paddingBottom: spacing.md,
+    },
+    centered: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: spacing.lg,
+    },
+    errorText: {
+      fontSize: 14,
+      color: colors.textMuted,
+      textAlign: 'center',
+    },
+    retryButton: {
+      marginTop: spacing.md,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      backgroundColor: colors.primary,
+      borderRadius: radius.pill,
+    },
+    retryButtonText: {
+      color: colors.onColor,
+      fontWeight: '600',
+    },
+  });
+}

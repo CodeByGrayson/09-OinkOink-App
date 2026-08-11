@@ -1,36 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import BottomNavigation from './components/BottomNavigation';
+import ContactScreen from './components/ContactScreen';
 import DropsScreen from './components/DropsScreen';
 import HowItWorksScreen from './components/HowItWorksScreen';
 import SpeciesGridScreen from './components/SpeciesGridScreen';
-import { colors, spacing } from './theme';
-
-function ComingSoonScreen() {
-  return (
-    <View style={styles.comingSoon}>
-      <Text style={styles.comingSoonText}>Coming Soon</Text>
-    </View>
-  );
-}
+import { ThemeProvider, useTheme } from './ThemeContext';
 
 const HEADER_TITLES = {
   search: 'Search',
   tab2: 'How It Works',
   tab3: 'Drops',
+  tab4: 'Contact',
 };
 
-export default function App() {
+function AppContent() {
   const [activeTab, setActiveTab] = useState('search');
+  const { theme, resolvedScheme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-        <StatusBar style="dark" />
+        <StatusBar style={resolvedScheme === 'dark' ? 'light' : 'dark'} />
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>{HEADER_TITLES[activeTab] ?? 'Coming Soon'}</Text>
+          <Text style={styles.headerTitle}>{HEADER_TITLES[activeTab]}</Text>
         </View>
 
         {activeTab === 'search' ? (
@@ -40,7 +36,7 @@ export default function App() {
         ) : activeTab === 'tab3' ? (
           <DropsScreen />
         ) : (
-          <ComingSoonScreen />
+          <ContactScreen />
         )}
 
         <BottomNavigation activeTab={activeTab} onChangeTab={setActiveTab} />
@@ -49,28 +45,29 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  header: {
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.md,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: colors.text,
-  },
-  comingSoon: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  comingSoonText: {
-    fontSize: 16,
-    color: colors.textMuted,
-  },
-});
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
+
+function createStyles(theme) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    header: {
+      paddingHorizontal: theme.spacing.md,
+      paddingTop: theme.spacing.sm,
+      paddingBottom: theme.spacing.md,
+    },
+    headerTitle: {
+      fontSize: 24,
+      fontWeight: '700',
+      color: theme.colors.text,
+    },
+  });
+}

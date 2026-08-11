@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors, radius, shadow, spacing } from '../theme';
+import { useTheme } from '../ThemeContext';
 
 const EXPLODED_VIEW_IMAGE = require('../artwork/zz_HowItWorks_011.png');
 // Image.resolveAssetSource() is native-only and throws on react-native-web,
@@ -8,9 +8,9 @@ const EXPLODED_VIEW_IMAGE = require('../artwork/zz_HowItWorks_011.png');
 const EXPLODED_VIEW_RATIO = 518 / 385;
 const HOLOFOIL_SWATCH_IMAGE = require('../artwork/zz_HowItWorks_012.png');
 const HOLOFOIL_SWATCH_RATIO = 518 / 207;
-const ESTIMATED_CONTENT_WIDTH = Dimensions.get('window').width - spacing.md * 2;
+const ESTIMATED_CONTENT_WIDTH = Dimensions.get('window').width - 16 * 2;
 
-function Section({ title, children }) {
+function Section({ title, children, styles }) {
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>{title}</Text>
@@ -20,6 +20,8 @@ function Section({ title, children }) {
 }
 
 export default function HowItWorksScreen() {
+  const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const [explodedImageWidth, setExplodedImageWidth] = useState(ESTIMATED_CONTENT_WIDTH);
   const [holofoilImageWidth, setHolofoilImageWidth] = useState(ESTIMATED_CONTENT_WIDTH);
 
@@ -33,7 +35,7 @@ export default function HowItWorksScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-      <Section title="What You Get">
+      <Section title="What You Get" styles={styles}>
         <Text style={styles.paragraph}>
           Every order includes a magnetic display case with front and back
           panels, both fitted with full UV-protection tempered glass, plus a
@@ -54,7 +56,7 @@ export default function HowItWorksScreen() {
         />
       </View>
 
-      <Section title="What Is Extended Art?">
+      <Section title="What Is Extended Art?" styles={styles}>
         <Text style={styles.paragraph}>
           The printed insert is designed to visually extend your card's
           existing artwork beyond its normal border. When your graded slab
@@ -64,7 +66,7 @@ export default function HowItWorksScreen() {
         </Text>
       </Section>
 
-      <Section title="Insert Material Options">
+      <Section title="Insert Material Options" styles={styles}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Acrylic</Text>
           <Text style={styles.paragraph}>Front side printed only.</Text>
@@ -86,7 +88,7 @@ export default function HowItWorksScreen() {
       </View>
       <Text style={styles.imageCaption}>Available holofoil patterns</Text>
 
-      <Section title="UV Protection">
+      <Section title="UV Protection" styles={styles}>
         <Text style={styles.paragraph}>
           The insert is printed with UV-resistant ink for long-lasting color
           protection, and both case panels use full UV-protection tempered
@@ -97,67 +99,70 @@ export default function HowItWorksScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xl,
-  },
-  section: {
-    marginBottom: spacing.lg,
-  },
-  sectionTitle: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: colors.text,
-    marginBottom: spacing.sm,
-  },
-  paragraph: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: colors.text,
-    marginBottom: spacing.sm,
-  },
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    padding: spacing.md,
-    marginBottom: spacing.sm,
-    ...shadow,
-  },
-  cardTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: colors.text,
-    marginBottom: 4,
-  },
-  explodedImageWrapper: {
-    width: '100%',
-    borderRadius: radius.md,
-    backgroundColor: colors.surface,
-    marginBottom: spacing.lg,
-    overflow: 'hidden',
-  },
-  explodedImage: {
-    width: '100%',
-  },
-  holofoilImageWrapper: {
-    width: '100%',
-    borderRadius: radius.md,
-    backgroundColor: colors.surface,
-    overflow: 'hidden',
-  },
-  holofoilImage: {
-    width: '100%',
-  },
-  imageCaption: {
-    fontSize: 13,
-    color: colors.textMuted,
-    textAlign: 'center',
-    marginTop: spacing.sm,
-    marginBottom: spacing.lg,
-  },
-});
+function createStyles(theme) {
+  const { colors, radius, shadow, spacing } = theme;
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    content: {
+      paddingHorizontal: spacing.md,
+      paddingTop: spacing.sm,
+      paddingBottom: spacing.xl,
+    },
+    section: {
+      marginBottom: spacing.lg,
+    },
+    sectionTitle: {
+      fontSize: 17,
+      fontWeight: '600',
+      color: colors.text,
+      marginBottom: spacing.sm,
+    },
+    paragraph: {
+      fontSize: 14,
+      lineHeight: 20,
+      color: colors.text,
+      marginBottom: spacing.sm,
+    },
+    card: {
+      backgroundColor: colors.surface,
+      borderRadius: radius.md,
+      padding: spacing.md,
+      marginBottom: spacing.sm,
+      ...shadow,
+    },
+    cardTitle: {
+      fontSize: 15,
+      fontWeight: '600',
+      color: colors.text,
+      marginBottom: 4,
+    },
+    explodedImageWrapper: {
+      width: '100%',
+      borderRadius: radius.md,
+      backgroundColor: colors.surface,
+      marginBottom: spacing.lg,
+      overflow: 'hidden',
+    },
+    explodedImage: {
+      width: '100%',
+    },
+    holofoilImageWrapper: {
+      width: '100%',
+      borderRadius: radius.md,
+      backgroundColor: colors.surface,
+      overflow: 'hidden',
+    },
+    holofoilImage: {
+      width: '100%',
+    },
+    imageCaption: {
+      fontSize: 13,
+      color: colors.textMuted,
+      textAlign: 'center',
+      marginTop: spacing.sm,
+      marginBottom: spacing.lg,
+    },
+  });
+}

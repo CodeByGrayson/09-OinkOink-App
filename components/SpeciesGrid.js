@@ -1,9 +1,13 @@
+import { useMemo } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { spacing } from '../theme';
+import { useTheme } from '../ThemeContext';
 import EmptyState from './EmptyState';
 import SpeciesCard from './SpeciesCard';
 
 export default function SpeciesGrid({ species, onSpeciesPress, ListHeaderComponent }) {
+  const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   return (
     <FlatList
       data={species}
@@ -19,14 +23,17 @@ export default function SpeciesGrid({ species, onSpeciesPress, ListHeaderCompone
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    paddingHorizontal: spacing.md,
-    paddingBottom: spacing.xl,
-    flexGrow: 1,
-  },
-  row: {
-    gap: spacing.md,
-    marginBottom: spacing.md,
-  },
-});
+function createStyles(theme) {
+  const { spacing } = theme;
+  return StyleSheet.create({
+    content: {
+      paddingHorizontal: spacing.md,
+      paddingBottom: spacing.xl,
+      flexGrow: 1,
+    },
+    row: {
+      gap: spacing.md,
+      marginBottom: spacing.md,
+    },
+  });
+}

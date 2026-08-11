@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DropsService from '../services/DropsService';
-import { colors, radius, shadow, spacing } from '../theme';
+import { useTheme } from '../ThemeContext';
 
 function formatDate(dateString) {
   return new Date(`${dateString}T00:00:00`).toLocaleDateString('en-US', {
@@ -38,7 +38,7 @@ function buildRows(drops) {
   return rows;
 }
 
-function PromotionBanner({ item }) {
+function PromotionBanner({ item, styles }) {
   const [width, setWidth] = useState(0);
   const ratio = item.imageWidth / item.imageHeight;
 
@@ -67,7 +67,7 @@ function PromotionBanner({ item }) {
 // new_design renders are full extended-art concepts (card art plus the
 // surrounding printed frame), a different shape than SpeciesCard's 600x835
 // card-only photos, so they need a dedicated aspect ratio, not a shared one.
-function NewDesignCard({ item }) {
+function NewDesignCard({ item, styles }) {
   return (
     <View style={styles.designCard}>
       <View style={styles.designImageWrapper}>
@@ -86,6 +86,8 @@ function NewDesignCard({ item }) {
 }
 
 export default function DropsScreen() {
+  const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const [drops, setDrops] = useState([]);
   const [status, setStatus] = useState('loading'); // 'loading' | 'ready' | 'error'
 
@@ -110,7 +112,7 @@ export default function DropsScreen() {
   if (status === 'loading') {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={colors.primary} />
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     );
   }
@@ -138,11 +140,11 @@ export default function DropsScreen() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
       {rows.map((row) =>
         row.kind === 'promotion' ? (
-          <PromotionBanner key={row.items[0].id} item={row.items[0]} />
+          <PromotionBanner key={row.items[0].id} item={row.items[0]} styles={styles} />
         ) : (
           <View key={row.items.map((item) => item.id).join('-')} style={styles.designRow}>
             {row.items.map((item) => (
-              <NewDesignCard key={item.id} item={item} />
+              <NewDesignCard key={item.id} item={item} styles={styles} />
             ))}
           </View>
         )
@@ -151,102 +153,105 @@ export default function DropsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xl,
-  },
-  centered: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
-  },
-  errorText: {
-    fontSize: 14,
-    color: colors.textMuted,
-    textAlign: 'center',
-  },
-  retryButton: {
-    marginTop: spacing.md,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.primary,
-    borderRadius: radius.pill,
-  },
-  retryButtonText: {
-    color: colors.surface,
-    fontWeight: '600',
-  },
-  promotionCard: {
-    backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    overflow: 'hidden',
-    marginBottom: spacing.lg,
-    ...shadow,
-  },
-  promotionImageWrapper: {
-    width: '100%',
-    backgroundColor: colors.border,
-  },
-  promotionImage: {
-    width: '100%',
-  },
-  promotionInfo: {
-    padding: spacing.md,
-  },
-  promotionTitle: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: colors.text,
-    marginBottom: spacing.sm,
-  },
-  paragraph: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: colors.text,
-    marginBottom: spacing.sm,
-  },
-  validity: {
-    fontSize: 13,
-    color: colors.textMuted,
-  },
-  designRow: {
-    flexDirection: 'row',
-    gap: spacing.md,
-    marginBottom: spacing.md,
-  },
-  designCard: {
-    flex: 1,
-    backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    overflow: 'hidden',
-    ...shadow,
-  },
-  designImageWrapper: {
-    aspectRatio: 600 / 1000,
-    backgroundColor: colors.border,
-  },
-  designImage: {
-    width: '100%',
-    height: '100%',
-  },
-  designInfo: {
-    padding: spacing.sm,
-  },
-  designName: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: colors.text,
-    lineHeight: 18,
-  },
-  designDescription: {
-    fontSize: 12,
-    color: colors.textMuted,
-    marginTop: 2,
-  },
-});
+function createStyles(theme) {
+  const { colors, radius, shadow, spacing } = theme;
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    content: {
+      paddingHorizontal: spacing.md,
+      paddingTop: spacing.sm,
+      paddingBottom: spacing.xl,
+    },
+    centered: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: spacing.lg,
+    },
+    errorText: {
+      fontSize: 14,
+      color: colors.textMuted,
+      textAlign: 'center',
+    },
+    retryButton: {
+      marginTop: spacing.md,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.sm,
+      backgroundColor: colors.primary,
+      borderRadius: radius.pill,
+    },
+    retryButtonText: {
+      color: colors.onColor,
+      fontWeight: '600',
+    },
+    promotionCard: {
+      backgroundColor: colors.surface,
+      borderRadius: radius.md,
+      overflow: 'hidden',
+      marginBottom: spacing.lg,
+      ...shadow,
+    },
+    promotionImageWrapper: {
+      width: '100%',
+      backgroundColor: colors.border,
+    },
+    promotionImage: {
+      width: '100%',
+    },
+    promotionInfo: {
+      padding: spacing.md,
+    },
+    promotionTitle: {
+      fontSize: 17,
+      fontWeight: '600',
+      color: colors.text,
+      marginBottom: spacing.sm,
+    },
+    paragraph: {
+      fontSize: 14,
+      lineHeight: 20,
+      color: colors.text,
+      marginBottom: spacing.sm,
+    },
+    validity: {
+      fontSize: 13,
+      color: colors.textMuted,
+    },
+    designRow: {
+      flexDirection: 'row',
+      gap: spacing.md,
+      marginBottom: spacing.md,
+    },
+    designCard: {
+      flex: 1,
+      backgroundColor: colors.surface,
+      borderRadius: radius.md,
+      overflow: 'hidden',
+      ...shadow,
+    },
+    designImageWrapper: {
+      aspectRatio: 600 / 1000,
+      backgroundColor: colors.border,
+    },
+    designImage: {
+      width: '100%',
+      height: '100%',
+    },
+    designInfo: {
+      padding: spacing.sm,
+    },
+    designName: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: colors.text,
+      lineHeight: 18,
+    },
+    designDescription: {
+      fontSize: 12,
+      color: colors.textMuted,
+      marginTop: 2,
+    },
+  });
+}

@@ -1,18 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, spacing } from '../theme';
+import { useTheme } from '../ThemeContext';
 
 const TABS = [
   { id: 'search', label: 'Search', icon: 'search', activeIcon: 'search' },
   { id: 'tab2', label: 'How It Works', icon: 'grid-outline', activeIcon: 'grid' },
   { id: 'tab3', label: 'Drops', icon: 'pokeball' },
-  { id: 'tab4', label: 'Coming Soon', icon: 'person-outline', activeIcon: 'person' },
+  { id: 'tab4', label: 'Contact', icon: 'person-outline', activeIcon: 'person' },
 ];
 
 // Plain-geometry stylized ball (circle + band + center dot) in the app's own
 // palette — deliberately not a reproduction of the trademarked Poké Ball design.
-function PokeballIcon({ size = 22, color }) {
+function PokeballIcon({ size = 22, color, surfaceColor, styles }) {
   const centerSize = Math.round(size * 0.36);
   return (
     <View style={[styles.pokeball, { width: size, height: size, borderRadius: size / 2, borderColor: color }]}>
@@ -20,16 +20,22 @@ function PokeballIcon({ size = 22, color }) {
       <View
         style={[
           styles.pokeballCenter,
-          { width: centerSize, height: centerSize, borderRadius: centerSize / 2, borderColor: color },
+          {
+            width: centerSize,
+            height: centerSize,
+            borderRadius: centerSize / 2,
+            borderColor: color,
+            backgroundColor: surfaceColor,
+          },
         ]}
       />
     </View>
   );
 }
 
-function NavItem({ tab, isActive, onPress }) {
+function NavItem({ tab, isActive, onPress, theme, styles }) {
   const scale = useRef(new Animated.Value(1)).current;
-  const color = isActive ? colors.primary : colors.textMuted;
+  const color = isActive ? theme.colors.primary : theme.colors.textMuted;
 
   const handlePress = () => {
     Animated.sequence([
@@ -43,7 +49,7 @@ function NavItem({ tab, isActive, onPress }) {
     <Pressable style={styles.item} onPress={handlePress} hitSlop={8}>
       <Animated.View style={{ transform: [{ scale }] }}>
         {tab.icon === 'pokeball' ? (
-          <PokeballIcon color={color} />
+          <PokeballIcon color={color} surfaceColor={theme.colors.surface} styles={styles} />
         ) : (
           <Ionicons name={isActive ? tab.activeIcon : tab.icon} size={22} color={color} />
         )}
@@ -54,6 +60,9 @@ function NavItem({ tab, isActive, onPress }) {
 }
 
 export default function BottomNavigation({ activeTab, onChangeTab }) {
+  const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   return (
     <View style={styles.container}>
       {TABS.map((tab) => (
@@ -62,51 +71,55 @@ export default function BottomNavigation({ activeTab, onChangeTab }) {
           tab={tab}
           isActive={activeTab === tab.id}
           onPress={onChangeTab}
+          theme={theme}
+          styles={styles}
         />
       ))}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    backgroundColor: colors.surface,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    paddingTop: spacing.sm,
-  },
-  item: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: spacing.sm,
-    gap: 4,
-  },
-  label: {
-    fontSize: 11,
-    color: colors.textMuted,
-  },
-  labelActive: {
-    color: colors.primary,
-    fontWeight: '600',
-  },
-  pokeball: {
-    borderWidth: 1.5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  pokeballBand: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: '50%',
-    height: 1.5,
-    marginTop: -0.75,
-  },
-  pokeballCenter: {
-    borderWidth: 1.5,
-    backgroundColor: colors.surface,
-  },
-});
+function createStyles(theme) {
+  const { colors, spacing } = theme;
+  return StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      backgroundColor: colors.surface,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      paddingTop: spacing.sm,
+    },
+    item: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingBottom: spacing.sm,
+      gap: 4,
+    },
+    label: {
+      fontSize: 11,
+      color: colors.textMuted,
+    },
+    labelActive: {
+      color: colors.primary,
+      fontWeight: '600',
+    },
+    pokeball: {
+      borderWidth: 1.5,
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+    },
+    pokeballBand: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: '50%',
+      height: 1.5,
+      marginTop: -0.75,
+    },
+    pokeballCenter: {
+      borderWidth: 1.5,
+    },
+  });
+}
